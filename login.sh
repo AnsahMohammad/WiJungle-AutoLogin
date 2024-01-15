@@ -3,7 +3,7 @@
 # Login to SVNIT network
 
 # initializing the configurations
-if [ -e login.config ]; then
+if [ ! -f login.config ]; then
     echo "Enter your username: "
     read  USERNAME
     echo "Enter the Password: "
@@ -38,4 +38,17 @@ else
     echo "Couldn't find the SVNIT network"
 fi
 
+# keepalive the connection
+while true; do
+    sleep 50
+    curl -k -X POST "https://172.16.1.1:8090/index.php?pageto=ka&ms=ds78asdasd444b6rasda3&mes=ds78asdasd444b6rasda3&u=1085&k1=66849649270&username=u21cs070" \
+        -H "Content-Type: application/x-www-form-urlencoded" \
+        -H "Cookie: WIJUNGLESID=srnbcf3bm47giuk2sim1ccitf1" \
+        -H "Origin: https://172.16.1.1:8090" \
+        -H "Referer: https://172.16.1.1:8090/" \
+        -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" \
+        -H "sec-ch-ua: \"Not_A Brand\";v=\"8\", \"Chromium\";v=\"120\", \"Google Chrome\";v=\"120\"" \
+        -H "sec-ch-ua-mobile: ?0" \
+        -H "sec-ch-ua-platform: \"Linux\""
+done
 
