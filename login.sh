@@ -2,6 +2,18 @@
 
 # Login to SVNIT network
 
+# initializing the configurations
+if [ -e login.config ]; then
+    echo "Enter your username: "
+    read  USERNAME
+    echo "Enter the Password: "
+    read -s PASSWORD
+
+    # Save USERNAME and PASSWORD in login.config
+    echo "USERNAME=$USERNAME" > login.config
+    echo "PASSWORD=$PASSWORD" >> login.config
+fi
+
 # Fetching the data from config file
 source login.config
 
