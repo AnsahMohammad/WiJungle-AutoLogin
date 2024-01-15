@@ -89,6 +89,9 @@ while true; do
         exit 0
     elif [ "$cmd" = "login" ]; then
         login_to_network
+    elif [ "$cmd" = "help" ]; then
+        echo "enter command 'login' to login to SVNIT network"
+        echo "enter command 'logout' to logout from SVNIT network"
     else
         echo "Invalid command"
     fi
