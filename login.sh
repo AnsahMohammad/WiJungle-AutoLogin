@@ -60,6 +60,8 @@ login_to_network() {
         status=$(echo $response | jq -r '.status')
         if [ "$status" = "fail" ]; then
             echo "Error occured while connecting to the network"
+        else
+            echo "Connected to SVNIT network"
         fi
         userid=$(echo $response | jq -r '.data.userid')
         k1=$(echo $response | jq -r '.data.k1')
