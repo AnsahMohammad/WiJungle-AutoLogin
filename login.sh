@@ -22,15 +22,20 @@ keepalive() {
     userid=$1
     kl=$2
     while true; do
-        sleep 100
-        curl -s -k -X POST "https://172.16.1.1:8090/index.php?pageto=ka&ms=ds78asdasd444b6rasda3&mes=ds78asdasd444b6rasda3&u=$userid&k1=$kl&username=$USERNAME" \
+        sleep 50
+        response=$(curl -s -k -X POST "https://172.16.1.1:8090/index.php?pageto=ka&ms=ds78asdasd444b6rasda3&mes=ds78asdasd444b6rasda3&u=$userid&k1=$kl&username=$USERNAME" \
             -H "Content-Type: application/x-www-form-urlencoded" \
             -H "Origin: https://172.16.1.1:8090" \
             -H "Referer: https://172.16.1.1:8090/" \
             -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" \
             -H "sec-ch-ua: \"Not_A Brand\";v=\"8\", \"Chromium\";v=\"120\", \"Google Chrome\";v=\"120\"" \
             -H "sec-ch-ua-mobile: ?0" \
-            -H "sec-ch-ua-platform: \"Linux\""
+            -H "sec-ch-ua-platform: \"Linux\"")
+
+        status=$(echo $response | jq -r '.status')
+        if [ "$status" = "fail" ]; then
+            echo "Error occured while connecting to the network"
+        fi
 
     done
 }
@@ -52,6 +57,10 @@ login_to_network() {
             --data-urlencode "portal=1" \
             --data-urlencode "stage=9")
 
+        status=$(echo $response | jq -r '.status')
+        if [ "$status" = "fail" ]; then
+            echo "Error occured while connecting to the network"
+        fi
         userid=$(echo $response | jq -r '.data.userid')
         k1=$(echo $response | jq -r '.data.k1')
 
