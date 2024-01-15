@@ -46,3 +46,15 @@ Form Data:
 "portal": "1",
 "stage": "9"
 ```
+
+Outputs from various requests :
+
+Login Request : 
+Output : {"status":"success","data":{"stage":"6","userid":1085,"username":"u21cs070","k1":66849649270}}
+
+Keep-alive Request :
+Output : {"status":"success"}
+
+Logout Request :
+Output : Success
+
