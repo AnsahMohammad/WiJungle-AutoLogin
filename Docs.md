@@ -47,14 +47,14 @@ Form Data:
 "stage": "9"
 ```
 
-Outputs from various requests :
+Responses from various requests :
 
 Login Request : 
-Output : {"status":"success","data":{"stage":"6","userid":1085,"username":"u21cs070","k1":66849649270}}
+Response : {"status":"success","data":{"stage":"6","userid":1085,"username":"u21cs070","k1":66849649270}}
 
 Keep-alive Request :
-Output : {"status":"success"}
+Response : {"status":"success"}
 
 Logout Request :
-Output : Success
+Response : Success
 
