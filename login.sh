@@ -96,12 +96,19 @@ while true; do
         kill "$KEEPALIVE_PID"
         logout
         echo "Logged out"
-        exit 0
     elif [ "$cmd" = "login" ]; then
         login_to_network
     elif [ "$cmd" = "help" ]; then
         echo "enter command 'login' to login to SVNIT network"
         echo "enter command 'logout' to logout from SVNIT network"
+    elif [ "$cmd" = "whoami" ]; then
+        echo "You are logged in as $USERNAME"
+    elif [ "$cmd" = "restart" ]; then
+        echo "Restarting the Network Manager"
+        sudo systemctl restart NetworkManager
+    elif [ "$cmd" = "exit" ]; then
+        echo "Thank you"
+        exit 0
     else
         echo "Invalid command"
     fi
