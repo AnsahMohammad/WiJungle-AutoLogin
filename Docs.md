@@ -50,7 +50,7 @@ Form Data:
 Responses from various requests :
 
 Login Request : 
-Response : {"status":"success","data":{"stage":"6","userid":1085,"username":"u21cs070","k1":66849649270}}
+Response : {"status":"success","data":{"stage":"6","userid":xxxx,"username":"u21csxxx","k1":xxxxxxxxxxx}}
 
 Keep-alive Request :
 Response : {"status":"success"}
