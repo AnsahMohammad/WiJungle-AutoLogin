@@ -1,14 +1,9 @@
 #!/bin/bash
 
+# TODO: ISSUE : Check if the username & password present in the login.config or not
+
 # Login to SVNIT network
 
-# initializing the configurations
-if [ ! -f login.config ]; then
-    register
-fi
-
-# Fetching the data from config file
-source login.config
 
 # keepalive the connection
 keepalive() {
@@ -46,7 +41,7 @@ register() {
 
 login_to_network() {
     # Checking for the SVNIT connection
-    if ping -c 1 "172.16.1.1" &> /dev/null; then
+    if ping -c 4 "172.16.1.1" &> /dev/null; then
         echo "Connecting to SVNIT network"
 
         response=$(curl -s -k -X POST "https://172.16.1.1:8090/index.php?pageto=c&ms=ds78asdasd444b6rasda3&mes=ds78asdasd444b6rasda3" \
@@ -74,7 +69,6 @@ login_to_network() {
         KEEPALIVE_PID=$!
     else
         echo "Couldn't find the SVNIT network"
-        exit 1
     fi
 }
 
@@ -88,9 +82,44 @@ logout(){
 
 }
 
+help(){
+    echo "########################################################################"
+    echo "                WI-JUNGLE LOGIN"
+    echo "login:"
+    echo "Log in to your account. You will be prompted for your username and password."
+    echo "logout:"
+    echo "Log out of your current session."
+    echo "register:"
+    echo "Register a new account. You will be prompted for a username, password, and email."
+    echo "whoami:"
+    echo "Display the username of the currently logged in user."
+    echo "restart:"
+    echo "Restart the application."
+    echo "help:"
+    echo "Display this help message."
+    echo "clear:"
+    echo "Clear the console screen."
+    echo "exit:"
+    echo "Exit the application."
+    echo "########################################################################"
+}
+
 # main execution begins here
 
+# initializing the configurations
+if [ ! -f login.config ]; then
+    echo "Welcome to Wi_Jugnle AutoLogin"
+    echo "Please configure"
+    register
+    echo "Type help for list of commands"
+    clear
+fi
+
+# Fetching the data from config file
+source login.config
+
 login_to_network
+echo "Hello $USERNAME!"
 
 # Wait for user input
 while true; do
@@ -103,7 +132,7 @@ while true; do
 
     elif [ "$cmd" = "login" ]; then
         login_to_network
-        # TODO : GIve welcome message
+        echo "Welcome back $USERNAME!"
 
     elif [ "$cmd" = "whoami" ]; then
         echo "You are logged in as $USERNAME"
@@ -118,10 +147,11 @@ while true; do
         echo "Restarting the Network Manager"
         sudo systemctl restart NetworkManager
 
+    # TODO: Implement ping command, to check the network stat
+    # TODO: Check the current network connection status with ping www.google.com
+
     elif [ "$cmd" = "help" ]; then
-        echo "enter command 'login' to login to SVNIT network"
-        echo "enter command 'logout' to logout from SVNIT network"
-        #TODO: Add help for all the commads
+        help
 
     elif [ "$cmd" = "clear" ]; then
         clear
