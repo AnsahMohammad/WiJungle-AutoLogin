@@ -37,6 +37,7 @@ register() {
     # Save USERNAME and PASSWORD in login.config
     echo "USERNAME=$USERNAME" > login.config
     echo "PASSWORD=$PASSWORD" >> login.config
+    echo "EXIT_IF_NOT_CONNECTED=0" >> login.config
 }
 
 login_to_network() {
@@ -69,6 +70,9 @@ login_to_network() {
         KEEPALIVE_PID=$!
     else
         echo "Couldn't find the SVNIT network"
+        if $EXIT_IF_NOT_CONNECTED; then
+            exit 1
+        fi
     fi
 }
 
@@ -112,7 +116,6 @@ if [ ! -f login.config ]; then
     echo "Please configure"
     register
     echo "Type help for list of commands"
-    clear
 fi
 
 # Fetching the data from config file
