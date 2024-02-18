@@ -4,14 +4,7 @@
 
 # initializing the configurations
 if [ ! -f login.config ]; then
-    echo "Enter your username: "
-    read  USERNAME
-    echo "Enter the Password: "
-    read -s PASSWORD
-
-    # Save USERNAME and PASSWORD in login.config
-    echo "USERNAME=$USERNAME" > login.config
-    echo "PASSWORD=$PASSWORD" >> login.config
+    register
 fi
 
 # Fetching the data from config file
@@ -38,6 +31,17 @@ keepalive() {
         fi
 
     done
+}
+
+register() {
+    echo "Enter your username: "
+    read  USERNAME
+    echo "Enter the Password: "
+    read -s PASSWORD
+
+    # Save USERNAME and PASSWORD in login.config
+    echo "USERNAME=$USERNAME" > login.config
+    echo "PASSWORD=$PASSWORD" >> login.config
 }
 
 login_to_network() {
@@ -96,21 +100,40 @@ while true; do
         kill "$KEEPALIVE_PID"
         logout
         echo "Logged out"
+
     elif [ "$cmd" = "login" ]; then
         login_to_network
-    elif [ "$cmd" = "help" ]; then
-        echo "enter command 'login' to login to SVNIT network"
-        echo "enter command 'logout' to logout from SVNIT network"
+        # TODO : GIve welcome message
+
     elif [ "$cmd" = "whoami" ]; then
         echo "You are logged in as $USERNAME"
+
+    elif [ "$cmd" = "register" ]; then
+        register
+        echo "Successfully registered as $USERNAME"
+        logout
+        login_to_network
+
     elif [ "$cmd" = "restart" ]; then
         echo "Restarting the Network Manager"
         sudo systemctl restart NetworkManager
+
+    elif [ "$cmd" = "help" ]; then
+        echo "enter command 'login' to login to SVNIT network"
+        echo "enter command 'logout' to logout from SVNIT network"
+        #TODO: Add help for all the commads
+
+    elif [ "$cmd" = "clear" ]; then
+        clear
+    
     elif [ "$cmd" = "exit" ]; then
         echo "Thank you"
+        sleep 1
+        clear
         exit 0
+
     else
-        echo "Invalid command"
+        echo "Invalid command Type 'help' for list of commands"
     fi
 done
 
