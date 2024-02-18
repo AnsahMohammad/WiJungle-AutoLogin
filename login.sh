@@ -69,10 +69,10 @@ login_to_network() {
         keepalive $userid $k1 &
         KEEPALIVE_PID=$!
     else
-        echo "Couldn't find the SVNIT network"
-        if $EXIT_IF_NOT_CONNECTED; then
+        if [ "$EXIT_IF_NOT_CONNECTED" = 1 ]; then
             exit 1
         fi
+        echo "Couldn't find the SVNIT network"
     fi
 }
 
