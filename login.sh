@@ -67,6 +67,7 @@ login_to_network() {
 
         keepalive $userid $k1 &
         KEEPALIVE_PID=$!
+        echo "Keepalive process started with PID: $KEEPALIVE_PID"
     else
         echo "Couldn't find the SVNIT network"
     fi
