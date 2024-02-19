@@ -89,22 +89,14 @@ logout(){
 help(){
     echo "########################################################################"
     echo "                WI-JUNGLE LOGIN"
-    echo "login:"
-    echo "Log in to your account. You will be prompted for your username and password."
-    echo "logout:"
-    echo "Log out of your current session."
-    echo "register:"
-    echo "Register a new account. You will be prompted for a username, password, and email."
-    echo "whoami:"
-    echo "Display the username of the currently logged in user."
-    echo "restart:"
-    echo "Restart the application."
-    echo "help:"
-    echo "Display this help message."
-    echo "clear:"
-    echo "Clear the console screen."
-    echo "exit:"
-    echo "Exit the application."
+    echo "login: Log in to your account. You will be prompted for your username and password."
+    echo "logout: Log out of your current session."
+    echo "register: Register a new account. You will be prompted for a username, password, and email."
+    echo "whoami: Display the username of the currently logged in user."
+    echo "restart: Restart the application."
+    echo "help: Display this help message."
+    echo "clear: Clear the console screen."
+    echo "exit: Exit the application."
     echo "########################################################################"
 }
 
@@ -150,8 +142,9 @@ while true; do
         echo "Restarting the Network Manager"
         sudo systemctl restart NetworkManager
 
-    # TODO: Implement ping command, to check the network stat
-    # TODO: Check the current network connection status with ping www.google.com
+    elif [ "$cmd" = "status" ]; then
+        echo "Pinging google.com"
+        ping -c 4 "www.google.com"
 
     elif [ "$cmd" = "help" ]; then
         help
@@ -161,6 +154,8 @@ while true; do
     
     elif [ "$cmd" = "exit" ]; then
         echo "Thank you"
+        kill "$KEEPALIVE_PID"
+        logout
         sleep 1
         clear
         exit 0
