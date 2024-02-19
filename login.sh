@@ -60,7 +60,7 @@ login_to_network() {
         if [ "$status" = "fail" ]; then
             echo "Error occured while connecting to the network"
         else
-            echo "Connected to SVNIT network"
+            echo "Connected to SVNIT network as $USERNAME"
         fi
         userid=$(echo $response | jq -r '.data.userid')
         k1=$(echo $response | jq -r '.data.k1')
@@ -108,7 +108,7 @@ help(){
 
 # initializing the configurations
 if [ ! -f login.config ]; then
-    echo "Welcome to Wi_Jugnle AutoLogin"
+    echo "Welcome to Wi_Jungle AutoLogin"
     echo "Please configure"
     register
     echo "Type help for list of commands"
@@ -119,7 +119,6 @@ fi
 source login.config
 
 login_to_network
-echo "Hello $USERNAME!"
 
 # Wait for user input
 while true; do
@@ -132,7 +131,6 @@ while true; do
 
     elif [ "$cmd" = "login" ]; then
         login_to_network
-        echo "Welcome back $USERNAME!"
 
     elif [ "$cmd" = "whoami" ]; then
         echo "You are logged in as $USERNAME"
