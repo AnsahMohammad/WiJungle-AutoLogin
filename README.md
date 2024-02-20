@@ -16,6 +16,8 @@ If you are using Windows, you will need to use either the Windows Subsystem for 
 
 ## Features
 
+![](https://drive.google.com/file/d/1pApQ8Pve726eYoF0VfsThB5BiLCNeb_c/view?usp=sharing)
+
 - Automatic login to the SVNIT WiJungle Firewall.
 - Saves your credentials for future logins.
 - Can be easily integrated into startup scripts to log in automatically when you connect to the network.

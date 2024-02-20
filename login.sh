@@ -1,9 +1,13 @@
 #!/bin/bash
 
-# TODO: ISSUE : Check if the username & password present in the login.config or not
-
-# Login to SVNIT network
-
+# verification of login.config
+verify() {
+    if grep -q "USERNAME" login.config && grep -q "PASSWORD" login.config; then
+        return 0
+    else
+        return 1
+    fi
+}
 
 # keepalive the connection
 keepalive() {
@@ -103,7 +107,7 @@ help(){
 # main execution begins here
 
 # initializing the configurations
-if [ ! -f login.config ]; then
+if [ ! -f login.config ] || ! verify; then
     echo "Welcome to Wi_Jungle AutoLogin"
     echo "Please configure"
     register
@@ -142,7 +146,7 @@ while true; do
 
     elif [ "$cmd" = "status" ]; then
         echo "Pinging google.com"
-        ping -c 4 "www.google.com"
+        ping -c 4 "www.google.com" | grep 'packets transmitted' | awk -F', ' '{print "Transmitted: " $1 "\nReceived: " $2 "\nLost: " $3}'
 
     elif [ "$cmd" = "help" ]; then
         help
