@@ -1,9 +1,35 @@
-# AutoLogin for WiJungle-SVNIT
+# WiJungle-SVNIT AutoLogin
 
-Streamline your SVNIT WiJungle firewall login experience with this automated script. SVNIT utilizes the WiJungle Firewall to manage its local network. To authenticate and access the network, students traditionally visit the URL: https://172.16.1.1:8090/ and input their admission number and password.
+This script automates the login process for the WiJungle Firewall of SVNIT Network. Instead of manually visiting the login page and entering your credentials each time, you can use this script to log in automatically.
 
-However, this routine login process can become mundane, leading to a dislikable task for many students. In response to this, a script has been developed that can be easily configured with your details. Once set up, the script takes care of the login process automatically, eliminating the need for manual login every time you connect to the SVNIT network. 
+## Usage
 
-Say goodbye to repetitive logins and enjoy seamless access to the SVNIT network with WiJungle-AutoLogin.
-Please star the repository if you find this helpful !
+1. Clone this repository.
+2. Optionally, move the `login.sh` script to your home directory for easy access. You can do this with the command `mv login.sh ~`.
+3. Run the script with the command `./login.sh`.
+4. The first time you run the script, it will prompt you to enter your admission number and password. These will be saved for future logins.
+5. The script will automatically log you in each time you run it.
 
+### Note for Windows Users
+
+If you are using Windows, you will need to use either the Windows Subsystem for Linux (WSL) or Git Bash to run this script.
+
+## Features
+
+- Automatic login to the SVNIT WiJungle Firewall.
+- Saves your credentials for future logins.
+- Can be easily integrated into startup scripts to log in automatically when you connect to the network.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a pull request.
+
+## License
+
+This project is licensed under the Apache License. See the LICENSE file for details.
+
+## Acknowledgements
+
+Thanks to the SVNIT community for their support in developing this script.
+
+If you find this script helpful, please consider giving it a star!
