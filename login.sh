@@ -37,6 +37,7 @@ register() {
     # Save USERNAME and PASSWORD in login.config
     echo "USERNAME=$USERNAME" > login.config
     echo "PASSWORD=$PASSWORD" >> login.config
+    echo "EXIT_IF_NOT_CONNECTED=0" >> login.config
 }
 
 login_to_network() {
@@ -68,6 +69,9 @@ login_to_network() {
         keepalive $userid $k1 &
         KEEPALIVE_PID=$!
     else
+        if [ "$EXIT_IF_NOT_CONNECTED" = 1 ]; then
+            exit 1
+        fi
         echo "Couldn't find the SVNIT network"
     fi
 }
@@ -85,22 +89,14 @@ logout(){
 help(){
     echo "########################################################################"
     echo "                WI-JUNGLE LOGIN"
-    echo "login:"
-    echo "Log in to your account. You will be prompted for your username and password."
-    echo "logout:"
-    echo "Log out of your current session."
-    echo "register:"
-    echo "Register a new account. You will be prompted for a username, password, and email."
-    echo "whoami:"
-    echo "Display the username of the currently logged in user."
-    echo "restart:"
-    echo "Restart the application."
-    echo "help:"
-    echo "Display this help message."
-    echo "clear:"
-    echo "Clear the console screen."
-    echo "exit:"
-    echo "Exit the application."
+    echo "login: Log in to your account. You will be prompted for your username and password."
+    echo "logout: Log out of your current session."
+    echo "register: Register a new account. You will be prompted for a username, password, and email."
+    echo "whoami: Display the username of the currently logged in user."
+    echo "restart: Restart the application."
+    echo "help: Display this help message."
+    echo "clear: Clear the console screen."
+    echo "exit: Exit the application."
     echo "########################################################################"
 }
 
@@ -112,7 +108,6 @@ if [ ! -f login.config ]; then
     echo "Please configure"
     register
     echo "Type help for list of commands"
-    clear
 fi
 
 # Fetching the data from config file
@@ -145,8 +140,9 @@ while true; do
         echo "Restarting the Network Manager"
         sudo systemctl restart NetworkManager
 
-    # TODO: Implement ping command, to check the network stat
-    # TODO: Check the current network connection status with ping www.google.com
+    elif [ "$cmd" = "status" ]; then
+        echo "Pinging google.com"
+        ping -c 4 "www.google.com"
 
     elif [ "$cmd" = "help" ]; then
         help
@@ -156,6 +152,8 @@ while true; do
     
     elif [ "$cmd" = "exit" ]; then
         echo "Thank you"
+        kill "$KEEPALIVE_PID"
+        logout
         sleep 1
         clear
         exit 0
