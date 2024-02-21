@@ -16,7 +16,7 @@ If you are using Windows, you will need to use either the Windows Subsystem for 
 
 ## Features
 
-![demo](https://github.com/AnsahMohammad/WiJungle-AutoLogin/assets/85027826/2b0981d8-420e-4b2d-8190-9783cd02013b)
+![AutoLogin](https://github.com/AnsahMohammad/WiJungle-AutoLogin/assets/85027826/2b0981d8-420e-4b2d-8190-9783cd02013b)
 
 - Automatic login to the SVNIT WiJungle Firewall.
 - Saves your credentials for future logins.

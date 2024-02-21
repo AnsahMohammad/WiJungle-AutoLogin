@@ -1,5 +1,7 @@
 #!/bin/bash
 
+VERSION="1.4"
+
 # verification of login.config
 verify() {
     if grep -q "USERNAME" login.config && grep -q "PASSWORD" login.config; then
@@ -11,9 +13,12 @@ verify() {
 
 # keepalive the connection
 keepalive() {
+    retry_count=0
     userid=$1
     kl=$2
-    while true; do
+    MAX_RETRIES=3
+
+    while [ $retry_count -lt $MAX_RETRIES ]; do
         sleep 50
         response=$(curl -s -k -X POST "https://172.16.1.1:8090/index.php?pageto=ka&ms=ds78asdasd444b6rasda3&mes=ds78asdasd444b6rasda3&u=$userid&k1=$kl&username=$USERNAME" \
             -H "Content-Type: application/x-www-form-urlencoded" \
@@ -26,10 +31,18 @@ keepalive() {
 
         status=$(echo $response | jq -r '.status')
         if [ "$status" = "fail" ]; then
-            echo "Error occured while connecting to the network"
+            retry_count=$((retry_count+1))
+        else
+            retry_count=0
         fi
-
     done
+
+    # Kill the bg process if can't connect after MAX_RETRIES
+    if [ $retry_count -eq $MAX_RETRIES ]; then
+        exit 1
+    fi
+
+    exit 0
 }
 
 register() {
@@ -93,11 +106,12 @@ logout(){
 help(){
     echo "########################################################################"
     echo "                WI-JUNGLE LOGIN"
-    echo "login: Log in to your account. You will be prompted for your username and password."
+    echo "login: Log in to your account."
     echo "logout: Log out of your current session."
-    echo "register: Register a new account. You will be prompted for a username, password, and email."
+    echo "register: Register a new account. You will be prompted for a username and password"
     echo "whoami: Display the username of the currently logged in user."
-    echo "restart: Restart the application."
+    echo "restart: Restart the Network Manager."
+    echo "version: Display the current version"
     echo "help: Display this help message."
     echo "clear: Clear the console screen."
     echo "exit: Exit the application."
@@ -147,6 +161,9 @@ while true; do
     elif [ "$cmd" = "status" ]; then
         echo "Pinging google.com"
         ping -c 4 "www.google.com" | grep 'packets transmitted' | awk -F', ' '{print "Transmitted: " $1 "\nReceived: " $2 "\nLost: " $3}'
+
+    elif [ "$cmd" = "version" ]; then
+        echo "Wi_Jungle AutoLogin $VERSION"
 
     elif [ "$cmd" = "help" ]; then
         help
