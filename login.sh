@@ -19,7 +19,6 @@ keepalive() {
     MAX_RETRIES=3
 
     while [ $retry_count -lt $MAX_RETRIES ]; do
-        sleep 50
         response=$(curl -s -k -X POST "https://172.16.1.1:8090/index.php?pageto=ka&ms=ds78asdasd444b6rasda3&mes=ds78asdasd444b6rasda3&u=$userid&k1=$kl&username=$USERNAME" \
             -H "Content-Type: application/x-www-form-urlencoded" \
             -H "Origin: https://172.16.1.1:8090" \
@@ -32,13 +31,18 @@ keepalive() {
         status=$(echo $response | jq -r '.status')
         if [ "$status" = "fail" ]; then
             retry_count=$((retry_count+1))
+            print "Error occured while"
+            sleep 1
+            continue
         else
             retry_count=0
         fi
+        sleep 50
     done
 
     # Kill the bg process if can't connect after MAX_RETRIES
     if [ $retry_count -eq $MAX_RETRIES ]; then
+        print "Process killed"
         exit 1
     fi
 
@@ -55,6 +59,8 @@ register() {
     echo "USERNAME=$USERNAME" > login.config
     echo "PASSWORD=$PASSWORD" >> login.config
     echo "EXIT_IF_NOT_CONNECTED=0" >> login.config
+
+    print "User registered $USERNAME"
 }
 
 login_to_network() {
@@ -85,6 +91,9 @@ login_to_network() {
 
         keepalive $userid $k1 &
         KEEPALIVE_PID=$!
+
+        print "Keepalive process started with PID: $KEEPALIVE_PID"
+
     else
         if [ "$EXIT_IF_NOT_CONNECTED" = 1 ]; then
             exit 1
@@ -101,6 +110,14 @@ logout(){
         -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" \
         -H "sec-ch-ua: \"Not_A Brand\";v=\"8\", \"Chromium\";v=\"120\", \"Google Chrome\";v=\"120\""
 
+    print "Logged out"
+}
+
+print(){
+    local debug_value=${DEBUG:-0}
+    if [ $debug_value -eq 1 ]; then
+        echo "Debug: $1"
+    fi
 }
 
 help(){
