@@ -179,6 +179,16 @@ while true; do
         echo "Pinging google.com"
         ping -c 4 "www.google.com" | grep 'packets transmitted' | awk -F', ' '{print "Transmitted: " $1 "\nReceived: " $2 "\nLost: " $3}'
 
+    elif [ "$cmd" = "debug" ]; then
+        if [ "${DEBUG:-0}" -eq 1 ]; then
+            print "Debug mode disabled"
+            DEBUG=0
+        else
+            DEBUG=1
+            print "Debug mode enabled"
+        fi
+        export DEBUG
+    
     elif [ "$cmd" = "version" ]; then
         echo "Wi_Jungle AutoLogin $VERSION"
 
@@ -197,7 +207,8 @@ while true; do
         exit 0
 
     else
-        echo "Invalid command Type 'help' for list of commands"
+        print "Invalid command $cmd"
+        echo "Invalid command, Type 'help' for list of commands"
     fi
 done
 
