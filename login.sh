@@ -43,6 +43,7 @@ keepalive() {
     # Kill the bg process if can't connect after MAX_RETRIES
     if [ $retry_count -eq $MAX_RETRIES ]; then
         print "Process killed"
+        kill_keepalive
         exit 1
     fi
 
@@ -91,19 +92,20 @@ login_to_network() {
         status=$(echo $response | jq -r '.status')
         if [ "$status" = "fail" ]; then
             echo "Error occured while connecting to the network"
+            print $status
         else
             echo "Connected to SVNIT network as $USERNAME"
+            userid=$(echo $response | jq -r '.data.userid')
+            k1=$(echo $response | jq -r '.data.k1')
+            
+            # kill already running keepalive process
+            kill_keepalive
+
+            keepalive $userid $k1 &
+            KEEPALIVE_PID=$!
+
+            print "Keepalive process started with PID: $KEEPALIVE_PID"
         fi
-        userid=$(echo $response | jq -r '.data.userid')
-        k1=$(echo $response | jq -r '.data.k1')
-        
-        # kill already running keepalive process
-        kill_keepalive
-
-        keepalive $userid $k1 &
-        KEEPALIVE_PID=$!
-
-        print "Keepalive process started with PID: $KEEPALIVE_PID"
 
     else
         if [ "$EXIT_IF_NOT_CONNECTED" = 1 ]; then
