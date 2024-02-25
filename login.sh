@@ -63,6 +63,14 @@ register() {
     print "User registered $USERNAME"
 }
 
+kill_keepalive() {
+    if [ -n "$KEEPALIVE_PID" ]; then
+        kill $KEEPALIVE_PID
+        print "$KEEPALIVE_PID process killed"
+        unset $KEEPALIVE_PID
+    fi
+}
+
 login_to_network() {
     # Checking for the SVNIT connection
     if ping -c 4 "172.16.1.1" &> /dev/null; then
@@ -88,6 +96,9 @@ login_to_network() {
         fi
         userid=$(echo $response | jq -r '.data.userid')
         k1=$(echo $response | jq -r '.data.k1')
+        
+        # kill already running keepalive process
+        kill_keepalive
 
         keepalive $userid $k1 &
         KEEPALIVE_PID=$!
@@ -155,7 +166,7 @@ while true; do
     read -p "Enter command: " cmd
     if [ "$cmd" = "logout" ]; then
         # Kill the keepalive process
-        kill "$KEEPALIVE_PID"
+        kill_keepalive
         logout
         echo "Logged out"
 
@@ -200,7 +211,7 @@ while true; do
     
     elif [ "$cmd" = "exit" ]; then
         echo "Thank you"
-        kill "$KEEPALIVE_PID"
+        kill_keepalive
         logout
         sleep 1
         clear
