@@ -42,8 +42,7 @@ keepalive() {
 
     # Kill the bg process if can't connect after MAX_RETRIES
     if [ $retry_count -eq $MAX_RETRIES ]; then
-        print "Process killed"
-        kill_keepalive
+        print "$$ Process killed"
         exit 1
     fi
 
@@ -66,9 +65,11 @@ register() {
 
 kill_keepalive() {
     if [ -n "$KEEPALIVE_PID" ]; then
-        kill $KEEPALIVE_PID
-        print "$KEEPALIVE_PID process killed"
-        unset $KEEPALIVE_PID
+        if kill -0 $KEEPALIVE_PID 2>/dev/null; then
+            kill $KEEPALIVE_PID
+            echo "$KEEPALIVE_PID process killed"
+        fi
+        unset KEEPALIVE_PID
     fi
 }
 
@@ -161,7 +162,9 @@ fi
 # Fetching the data from config file
 source login.config
 
-login_to_network
+if [ "$1" = "login" ];then
+    login_to_network
+fi
 
 # Wait for user input
 while true; do
