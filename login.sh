@@ -42,7 +42,7 @@ keepalive() {
 
     # Kill the bg process if can't connect after MAX_RETRIES
     if [ $retry_count -eq $MAX_RETRIES ]; then
-        print "$$ Process killed"
+        print "$KEEPALIVE_PID Process killed"
         exit 1
     fi
 
