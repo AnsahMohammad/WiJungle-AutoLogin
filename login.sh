@@ -162,13 +162,14 @@ fi
 # Fetching the data from config file
 source login.config
 
-if [ "$1" = "login" ];then
+if [ -n "$1" ]; then
+    cmd=$1
+else
     login_to_network
 fi
 
 # Wait for user input
 while true; do
-    read -p "Enter command: " cmd
     if [ "$cmd" = "logout" ]; then
         # Kill the keepalive process
         kill_keepalive
@@ -221,10 +222,16 @@ while true; do
         sleep 1
         clear
         exit 0
+    
+    elif [ "$cmd" = "" ]; then
+        print "cmd is empty"
+        continue
 
     else
         print "Invalid command $cmd"
         echo "Invalid command, Type 'help' for list of commands"
     fi
+
+    read -p "Enter command: " cmd
 done
 
