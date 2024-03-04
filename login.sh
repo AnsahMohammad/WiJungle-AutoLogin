@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="1.4"
+VERSION="1.5.0"
 
 # verification of login.config
 verify() {
@@ -165,7 +165,7 @@ source login.config
 if [ -n "$1" ]; then
     cmd=$1
 else
-    login_to_network
+    cmd="login"
 fi
 
 # Wait for user input
@@ -223,9 +223,8 @@ while true; do
         clear
         exit 0
     
-    elif [ "$cmd" = "" ]; then
+    elif [ "$cmd"="" ]; then
         print "cmd is empty"
-        continue
 
     else
         print "Invalid command $cmd"
