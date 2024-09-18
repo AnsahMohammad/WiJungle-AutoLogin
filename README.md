@@ -9,6 +9,7 @@ This script automates the login process for the WiJungle Firewall of SVNIT Netwo
 3. Run the script with the command `./login.sh`.
 4. The first time you run the script, it will prompt you to enter your admission number and password. These will be saved for future logins.
 5. The script will automatically log you in each time you run it.
+6. Install `jq` if you're in Ubuntu distribution.
 
 ### Note for Windows Users
 
